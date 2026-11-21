@@ -104,6 +104,8 @@ void ConfigDialog::loadFromConfig()
     m_highlightMarkColorDarkEdit->setText(cfg.highlightMarkColorDark);
 
     m_launchAtStartupCheck->setChecked(cfg.launchAtStartup);
+    if (m_trayClickCombo)
+        m_trayClickCombo->setCurrentIndex(cfg.trayClickAction == 1 ? 1 : 0);
     m_enableUmamiAnalyticsCheck->setChecked(cfg.enableUmamiAnalytics);
     m_debugModeCheck->setChecked(cfg.debugMode);
     m_enableQuitHotkeyCheck->setChecked(cfg.enableQuitHotkey);
@@ -264,6 +266,8 @@ bool ConfigDialog::collectConfig(AppConfig &cfg)
         cfg.quitHotkey = "alt+q";
 
     cfg.launchAtStartup = m_launchAtStartupCheck->isChecked();
+    if (m_trayClickCombo)
+        cfg.trayClickAction = m_trayClickCombo->currentData().toInt() == 1 ? 1 : 0;
     cfg.enableUmamiAnalytics = m_enableUmamiAnalyticsCheck->isChecked();
     cfg.debugMode = m_debugModeCheck->isChecked();
     cfg.storagePath = storageSetting; // Keep auto-default behavior when the chosen path matches the default.

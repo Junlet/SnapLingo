@@ -32,6 +32,19 @@ void ConfigDialog::setupOtherTab()
     m_launchAtStartupCheck = new QCheckBox("Launch at Startup", this);
     advLayout->addWidget(m_launchAtStartupCheck);
 
+    auto *trayRow = new QWidget(this);
+    auto *trayRowLayout = new QHBoxLayout(trayRow);
+    trayRowLayout->setContentsMargins(0, 0, 0, 0);
+    trayRowLayout->setSpacing(8);
+    m_trayClickLabel = new QLabel(TranslationManager::instance().tr("lbl_tray_click"), this);
+    m_trayClickCombo = new QComboBox(this);
+    m_trayClickCombo->setObjectName(QStringLiteral("trayClickCombo"));
+    m_trayClickCombo->addItem(TranslationManager::instance().tr("tray_click_home"), 0);
+    m_trayClickCombo->addItem(TranslationManager::instance().tr("tray_click_screenshot"), 1);
+    trayRowLayout->addWidget(m_trayClickLabel);
+    trayRowLayout->addWidget(m_trayClickCombo, 1);
+    advLayout->addWidget(trayRow);
+
     m_enableUmamiAnalyticsCheck = new QCheckBox("Enable Umami Analytics", this);
     advLayout->addWidget(m_enableUmamiAnalyticsCheck);
 

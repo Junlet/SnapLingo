@@ -19,7 +19,7 @@ void ConfigDialog::retranslateUi()
     {
         const QString version = QCoreApplication::applicationVersion();
         m_headerSubtitle->setText(QStringLiteral("SnapLingo %1  ·  %2")
-                                      .arg(version.isEmpty() ? QStringLiteral("1.1.2") : version,
+                                      .arg(version.isEmpty() ? QStringLiteral("1.1.3") : version,
                                            tm.tr("settings_subtitle")));
     }
     if (auto *profileCaption = findChild<QLabel *>(QStringLiteral("profileCaption")))
@@ -254,6 +254,15 @@ void ConfigDialog::retranslateUi()
         if (m_enableUmamiAnalyticsCheck)
             m_enableUmamiAnalyticsCheck->setText(tm.tr("chk_umami_analytics"));
         m_debugModeCheck->setText(tm.tr("chk_debug"));
+        if (m_trayClickLabel)
+            m_trayClickLabel->setText(tm.tr("lbl_tray_click"));
+        if (m_trayClickCombo)
+        {
+            const int trayIndex = m_trayClickCombo->currentIndex();
+            m_trayClickCombo->setItemText(0, tm.tr("tray_click_home"));
+            m_trayClickCombo->setItemText(1, tm.tr("tray_click_screenshot"));
+            m_trayClickCombo->setCurrentIndex(trayIndex);
+        }
         if (m_enableQuitHotkeyCheck)
             m_enableQuitHotkeyCheck->setText(tm.tr("chk_quit_hotkey"));
         if (m_quitHotkeyLabel)

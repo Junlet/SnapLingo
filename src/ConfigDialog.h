@@ -220,6 +220,8 @@ private:
     QCheckBox *m_launchAtStartupCheck = nullptr;
     QCheckBox *m_enableUmamiAnalyticsCheck = nullptr;
     QCheckBox *m_debugModeCheck = nullptr;
+    QLabel *m_trayClickLabel = nullptr;
+    QComboBox *m_trayClickCombo = nullptr;
 
     QCheckBox *m_enableQuitHotkeyCheck = nullptr;
     QLabel *m_quitHotkeyLabel = nullptr;

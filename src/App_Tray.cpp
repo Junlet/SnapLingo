@@ -26,13 +26,12 @@ void App::setupTray()
     TranslationManager &tm = TranslationManager::instance();
 
     m_trayMenuOpen = false;
-    m_pendingTrayScreenshot = false;
+    m_pendingTrayAction = -1;
 
-    // Screenshot is deliberately the first item: on some Windows 11 tray
-    // overflow implementations a click opens the menu under the cursor, and the
-    // old "home first" order made that click land on "打开主页".
-    m_trayMenu->addAction(tm.tr("tray_screenshot"), this, &App::onScreenshotRequested);
+    // "打开主页" is deliberately first: the user expects a tray click to open
+    // the dashboard, and Windows may expand this menu under the cursor.
     m_trayMenu->addAction(tm.tr("tray_home"), this, &App::showHome);
+    m_trayMenu->addAction(tm.tr("tray_screenshot"), this, &App::onScreenshotRequested);
     m_trayMenu->addAction(tm.tr("tray_summary"), this, &App::showSummary);
     m_trayMenu->addAction(tm.tr("tray_settings"), this, &App::showConfig);
     m_trayMenu->addSeparator();
@@ -44,7 +43,7 @@ void App::setupTray()
     connect(m_trayMenu, &QMenu::aboutToShow, this, [this]()
             {
                 m_trayMenuOpen = true;
-                m_pendingTrayScreenshot = false; });
+                m_pendingTrayAction = -1; });
     connect(m_trayMenu, &QMenu::aboutToHide, this, [this]()
             { m_trayMenuOpen = false; });
 
@@ -52,21 +51,25 @@ void App::setupTray()
             {
         if (reason == QSystemTrayIcon::Trigger) {
             // On Windows, right-click/context menu can occasionally emit Trigger.
-            // Delay starting screenshot; cancel if the context menu opens.
-            m_pendingTrayScreenshot = true;
+            // Delay the action; cancel if the context menu opens.
+            m_pendingTrayAction = (m_configManager.getConfig().trayClickAction == 1) ? 1 : 0;
             QTimer::singleShot(120, this, [this]()
                                {
-                                   if (!m_pendingTrayScreenshot)
+                                   const int action = m_pendingTrayAction;
+                                   if (action < 0)
                                        return;
-                                   m_pendingTrayScreenshot = false;
+                                   m_pendingTrayAction = -1;
                                    if (m_trayMenuOpen)
                                        return;
-                                   onScreenshotRequested();
+                                   if (action == 1)
+                                       onScreenshotRequested();
+                                   else
+                                       showHome();
                                });
         } else if (reason == QSystemTrayIcon::DoubleClick) {
-            m_pendingTrayScreenshot = false;
+            m_pendingTrayAction = -1;
             showSummary();
         } else if (reason == QSystemTrayIcon::Context) {
-            m_pendingTrayScreenshot = false;
+            m_pendingTrayAction = -1;
         } });
 }

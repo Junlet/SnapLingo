@@ -61,6 +61,9 @@ struct AppConfig
     bool debugMode = false;
     bool launchAtStartup = false;
     bool enableUmamiAnalytics = true;
+    // What a single left-click on the tray icon does: 0 = open the dashboard,
+    // 1 = start a screenshot. Stored per profile; defaults to dashboard.
+    int trayClickAction = 0;
 
     // New Settings
     bool showPreviewCard = false;

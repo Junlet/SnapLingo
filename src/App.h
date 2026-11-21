@@ -89,7 +89,7 @@ private:
     // Windows tray quirk: right-click/context menu can sometimes emit Trigger.
     // Use these flags to avoid starting screenshot selection while the menu is opening/visible.
     bool m_trayMenuOpen = false;
-    bool m_pendingTrayScreenshot = false;
+    int m_pendingTrayAction = -1; // 0 = home, 1 = screenshot
 
     // Track active windows
     QList<QPointer<QWidget>> m_activeWindows;

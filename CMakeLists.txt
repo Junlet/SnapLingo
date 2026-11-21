@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(AI-Screenshot-Translator-Cpp VERSION 1.1.2 LANGUAGES CXX)
+project(AI-Screenshot-Translator-Cpp VERSION 1.1.3 LANGUAGES CXX)
 
 # set(PROJECT_VERSION_PRERELEASE "beta")
 # set(PROJECT_VERSION_STRING "${PROJECT_VERSION}-${PROJECT_VERSION_PRERELEASE}")
