@@ -1,5 +1,6 @@
 ﻿#define MyAppName "SnapLingo"
 #define MyAppHomeName "SnapLingo 主页"
+#define MyAppShotName "SnapLingo 截图"
 #define MyAppLegacyName "AI Screenshot Translator"
 #define MyAppExeName "SnapLingo.exe"
 #define MyAppLegacyExeName "AI-Screenshot-Translator-Cpp.exe"
@@ -7,7 +8,7 @@
 [Setup]
 ; 程序基本信息
 AppName={#MyAppName}
-AppVersion=1.1.5
+AppVersion=1.1.6
 ; New installs go to a folder that matches the new product name. Upgrades keep
 ; their existing folder because UsePreviousAppDir defaults to yes: an old user
 ; stays in "...\AI Screenshot Translator" with storage\ untouched, while a fresh
@@ -90,11 +91,11 @@ Source: "{#SourcePath}\build\Release\*"; DestDir: "{app}"; Flags: recursesubdirs
 Source: "{#SourcePath}\.env"; DestDir: "{app}"; Flags: onlyifdoesntexist skipifsourcedoesntexist
 
 [Icons]
-; The app icon is a screenshot entry point. The dashboard is opened from the
-; tray menu, so there is no separate "--home" shortcut that could be mistaken
-; for the screenshot icon.
-Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Parameters: "--screenshot"
-Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Parameters: "--screenshot"; Tasks: desktopicon
+; Normal app launch opens the dashboard. A separate shortcut is the explicit
+; screenshot entry point for the taskbar/toolbar.
+Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Parameters: "--dashboard"
+Name: "{group}\{#MyAppShotName}"; Filename: "{app}\{#MyAppExeName}"; Parameters: "--screenshot"
+Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Parameters: "--dashboard"; Tasks: desktopicon
 
 [Run]
 ; 安装结束后打开主页（首次启动），不自动截图
