@@ -7,7 +7,7 @@
 [Setup]
 ; 程序基本信息
 AppName={#MyAppName}
-AppVersion=1.1.0
+AppVersion=1.1.1
 ; New installs go to a folder that matches the new product name. Upgrades keep
 ; their existing folder because UsePreviousAppDir defaults to yes: an old user
 ; stays in "...\AI Screenshot Translator" with storage\ untouched, while a fresh
@@ -90,15 +90,15 @@ Source: "{#SourcePath}\build\Release\*"; DestDir: "{app}"; Flags: recursesubdirs
 Source: "{#SourcePath}\.env"; DestDir: "{app}"; Flags: onlyifdoesntexist skipifsourcedoesntexist
 
 [Icons]
-; The main shortcut is the screenshot entry point; a second shortcut opens the
-; dashboard. A plain launch also defaults to screenshot in main.cpp.
+; The app icon is a screenshot entry point. The dashboard is opened from the
+; tray menu, so there is no separate "--home" shortcut that could be mistaken
+; for the screenshot icon.
 Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Parameters: "--screenshot"
-Name: "{group}\{#MyAppHomeName}"; Filename: "{app}\{#MyAppExeName}"; Parameters: "--home"
 Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Parameters: "--screenshot"; Tasks: desktopicon
 
 [Run]
-; 安装结束后询问是否立即启动程序（打开主页，而不是立刻截图）
-Filename: "{app}\{#MyAppExeName}"; Parameters: "--home"; Description: "{cm:LaunchProgram,{#MyAppName}}"; Flags: nowait postinstall skipifsilent
+; 安装结束后在托盘启动，不自动弹主页，也不自动截图
+Filename: "{app}\{#MyAppExeName}"; Parameters: "--tray"; Description: "{cm:LaunchProgram,{#MyAppName}}"; Flags: nowait postinstall skipifsilent
 
 [UninstallDelete]
 Type: filesandordirs; Name: "{app}\wkf.log"
@@ -150,6 +150,11 @@ begin
     Log('Removed legacy user desktop shortcut');
   if DeleteFile(ExpandConstant('{autodesktop}\{#MyAppLegacyName}.lnk')) then
     Log('Removed legacy desktop shortcut');
+
+  // Older 1.1.0 test builds created a "--home" shortcut. It must not stay
+  // around: the app icon is the screenshot entry point now.
+  if DeleteFile(ExpandConstant('{group}\{#MyAppHomeName}.lnk')) then
+    Log('Removed obsolete SnapLingo home shortcut');
 end;
 
 procedure CurStepChanged(CurStep: TSetupStep);

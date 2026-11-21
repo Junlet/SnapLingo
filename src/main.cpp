@@ -229,22 +229,21 @@ int main(int argc, char *argv[])
     QCoreApplication::setApplicationVersion(QString::fromUtf8(APP_VERSION));
 
     // Launch intent. The app icon is a screenshot tool entry point: a plain launch
-    // starts a capture, while --home/--archive/--settings open the other surfaces.
+    // starts a capture; --archive/--settings open the other surfaces explicitly.
     QString launchCommand = QStringLiteral("screenshot");
     const QStringList launchArgs = QCoreApplication::arguments().mid(1);
     for (const QString &arg : launchArgs)
     {
         const QString a = arg.trimmed().toLower();
-        if (a == QStringLiteral("--home") || a == QStringLiteral("-h") || a == QStringLiteral("home"))
-            launchCommand = QStringLiteral("home");
-        else if (a == QStringLiteral("--archive") || a == QStringLiteral("-a") || a == QStringLiteral("archive"))
+        if (a == QStringLiteral("--archive") || a == QStringLiteral("-a") || a == QStringLiteral("archive"))
             launchCommand = QStringLiteral("archive");
         else if (a == QStringLiteral("--settings") || a == QStringLiteral("settings"))
             launchCommand = QStringLiteral("settings");
         else if (a == QStringLiteral("--tray") || a == QStringLiteral("tray"))
             launchCommand = QStringLiteral("tray");
-        else if (a == QStringLiteral("--screenshot") || a == QStringLiteral("-s") || a == QStringLiteral("screenshot"))
-            launchCommand = QStringLiteral("screenshot");
+        // Anything else (including a stale "--home" shortcut left on a desktop)
+        // falls through to the default screenshot action. The dashboard is opened
+        // from the tray menu, so an app icon can never silently turn into "home".
     }
 
     // If SnapLingo is already running, forward the intent and exit. This is what

@@ -19,7 +19,7 @@ void ConfigDialog::retranslateUi()
     {
         const QString version = QCoreApplication::applicationVersion();
         m_headerSubtitle->setText(QStringLiteral("SnapLingo %1  ·  %2")
-                                      .arg(version.isEmpty() ? QStringLiteral("1.1.0") : version,
+                                      .arg(version.isEmpty() ? QStringLiteral("1.1.1") : version,
                                            tm.tr("settings_subtitle")));
     }
     if (auto *profileCaption = findChild<QLabel *>(QStringLiteral("profileCaption")))

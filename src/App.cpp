@@ -224,13 +224,8 @@ void App::handleLaunchCommand(const QString &command)
         showConfig();
         return;
     }
-    if (normalized == QStringLiteral("home"))
-    {
-        showHome();
-        return;
-    }
-    // Default (and "screenshot"): start a capture. Deferred so the launching
-    // process / modal window is gone before the overlay takes focus.
+    // The dashboard is only opened from the tray menu; an app icon always
+    // launches a screenshot.
     QTimer::singleShot(0, this, &App::onScreenshotRequested);
 }
 
