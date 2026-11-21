@@ -143,9 +143,11 @@ After completion, the exe + DLL + assets in `build/Release/` form a distributabl
 - Windows 10 may require separate installation of WebView2 Runtime.
 - If the window is blank/crashes, first confirm that the system WebView2 Runtime is functioning properly, then check whether `WebView2Loader.dll` was copied to the same directory as the exe during packaging.
 
-## License
+## Origin and License
 
-The included `webview.h` is under the MIT license; for other code, please refer to the actual license in the repository.
+This project is based on [AI Screenshot Translator](https://github.com/Diraw/AI-Screenshot-Translator) by Diraw (GPL-3.0). The SnapLingo rename, UI changes, installer migration, and other modifications were made by Junlet; the original copyright remains with Diraw and its contributors.
+
+This project is released under **GPL-3.0**; see [LICENSE](LICENSE) for the full text. The bundled `webview.h` is under the MIT license.
 
 ## Support
 

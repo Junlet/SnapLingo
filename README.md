@@ -144,9 +144,11 @@ cmake -E copy_if_different webview2_pkg/build/native/x64/WebView2Loader.dll buil
 - Windows 10 可能需要单独安装 WebView2 Runtime。
 - 如果窗口空白/崩溃，先确认系统 WebView2 Runtime 正常，再检查打包时 `WebView2Loader.dll` 是否拷贝到 exe 同目录。
 
-## 许可
+## 来源与许可
 
-项目包含的 `webview.h` 遵循 MIT 许可，其余代码请根据仓库实际许可使用。
+本项目基于 Diraw 的 [AI Screenshot Translator](https://github.com/Diraw/AI-Screenshot-Translator)（GPL-3.0）修改而来。SnapLingo 的重命名、界面调整、安装迁移等修改由 Junlet 完成；原项目版权归 Diraw 及贡献者所有。
+
+本项目按 **GPL-3.0** 发布，完整文本见 [LICENSE](LICENSE)。项目包含的 `webview.h` 遵循 MIT 许可。
 
 ## 其他
 
