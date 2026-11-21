@@ -80,9 +80,11 @@ void ConfigDialog::onTestConnection()
 
     if (m_testReply)
     {
-        m_testReply->abort();
-        m_testReply->deleteLater();
+        QNetworkReply *previous = m_testReply;
         m_testReply = nullptr;
+        previous->disconnect(this);
+        previous->abort();
+        previous->deleteLater();
     }
 
     const QString baseUrl = m_baseUrlEdit ? m_baseUrlEdit->text().trimmed() : QString();
@@ -162,21 +164,15 @@ void ConfigDialog::onTestConnection()
         m_testReply = issuedReply;
         QPointer<QNetworkReply> activeReply = issuedReply;
 
-        QTimer *timeoutTimer = new QTimer(this);
-        timeoutTimer->setSingleShot(true);
-        timeoutTimer->setInterval(8000);
-        connect(timeoutTimer, &QTimer::timeout, this, [activeReply]()
-                {
-                    if (activeReply && activeReply->isRunning())
-                        activeReply->abort();
-                });
-        timeoutTimer->start();
+        QTimer::singleShot(8000, this, [activeReply]()
+                           {
+                               if (activeReply && activeReply->isRunning())
+                                   activeReply->abort();
+                           });
 
-        connect(issuedReply, &QNetworkReply::finished, this, [this, timeoutTimer, activeReply]()
+        connect(issuedReply, &QNetworkReply::finished, this, [this, activeReply]()
                 {
                     TranslationManager &tm = TranslationManager::instance();
-                    timeoutTimer->stop();
-                    timeoutTimer->deleteLater();
 
                     if (!activeReply)
                         return;
@@ -282,9 +278,11 @@ void ConfigDialog::onTestAdvancedApi()
 
     if (m_testReply)
     {
-        m_testReply->abort();
-        m_testReply->deleteLater();
+        QNetworkReply *previous = m_testReply;
         m_testReply = nullptr;
+        previous->disconnect(this);
+        previous->abort();
+        previous->deleteLater();
     }
 
     if (m_advancedApiResultEdit)
@@ -417,21 +415,14 @@ void ConfigDialog::onTestAdvancedApi()
     QPointer<QNetworkReply> activeReply = issuedReply;
     const qint64 requestStartMs = QDateTime::currentMSecsSinceEpoch();
 
-    QTimer *timeoutTimer = new QTimer(this);
-    timeoutTimer->setSingleShot(true);
-    timeoutTimer->setInterval(timeoutMs);
-    connect(timeoutTimer, &QTimer::timeout, this, [activeReply]()
-            {
-                if (activeReply && activeReply->isRunning())
-                    activeReply->abort();
-            });
-    timeoutTimer->start();
+    QTimer::singleShot(timeoutMs, this, [activeReply]()
+                       {
+                           if (activeReply && activeReply->isRunning())
+                               activeReply->abort();
+                       });
 
-    connect(issuedReply, &QNetworkReply::finished, this, [this, timeoutTimer, activeReply, requestStartMs]()
+    connect(issuedReply, &QNetworkReply::finished, this, [this, activeReply, requestStartMs]()
             {
-                timeoutTimer->stop();
-                timeoutTimer->deleteLater();
-
                 if (!activeReply)
                     return;
 

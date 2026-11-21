@@ -15,6 +15,7 @@
 #include <QJsonObject>
 #include <QHash>
 #include <QListWidget>
+#include <QNetworkReply>
 #include <QListWidgetItem>
 #include <QMessageBox>
 #include <QNetworkAccessManager>
@@ -105,7 +106,18 @@ void ConfigDialog::onExportHistory()
         tm.tr("export_history_success").arg(exportedCount));
 }
 
-ConfigDialog::~ConfigDialog() = default;
+ConfigDialog::~ConfigDialog()
+{
+    // Settings may be closed while a connection test is still in flight. Cut the
+    // reply's signals before the child QNetworkAccessManager deletes it, so no
+    // finished handler can run against a half-destroyed dialog.
+    if (m_testReply)
+    {
+        m_testReply->disconnect(this);
+        m_testReply->abort();
+        m_testReply = nullptr;
+    }
+}
 
 void ConfigDialog::setGlobalHotkeyConflictKeys(const QStringList &labelKeys, bool focusConflicts)
 {

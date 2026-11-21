@@ -29,7 +29,7 @@ class App : public QObject
 {
     Q_OBJECT
 public:
-    explicit App(const QString &launchCommand = QStringLiteral("screenshot"), QObject *parent = nullptr);
+    explicit App(const QString &launchCommand = QStringLiteral("home"), QObject *parent = nullptr);
     ~App();
 
 private slots:

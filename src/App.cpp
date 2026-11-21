@@ -34,7 +34,7 @@ App::App(const QString &launchCommand, QObject *parent)
       m_settingsHotkey(102, this),
       m_quitHotkey(103, this)
 {
-    m_launchCommand = launchCommand.isEmpty() ? QStringLiteral("screenshot") : launchCommand;
+    m_launchCommand = launchCommand.isEmpty() ? QStringLiteral("home") : launchCommand;
 
     // First start after install/upgrade opens the dashboard instead of taking a
     // screenshot. The marker lives outside the profiles so switching profiles

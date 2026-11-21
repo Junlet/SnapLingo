@@ -230,12 +230,14 @@ int main(int argc, char *argv[])
 
     // Launch intent. The app icon is a screenshot tool entry point: a plain launch
     // starts a capture; --archive/--settings open the other surfaces explicitly.
-    QString launchCommand = QStringLiteral("screenshot");
+    QString launchCommand = QStringLiteral("home");
     const QStringList launchArgs = QCoreApplication::arguments().mid(1);
     for (const QString &arg : launchArgs)
     {
         const QString a = arg.trimmed().toLower();
-        if (a == QStringLiteral("--archive") || a == QStringLiteral("-a") || a == QStringLiteral("archive"))
+        if (a == QStringLiteral("--screenshot") || a == QStringLiteral("-s") || a == QStringLiteral("screenshot"))
+            launchCommand = QStringLiteral("screenshot");
+        else if (a == QStringLiteral("--archive") || a == QStringLiteral("-a") || a == QStringLiteral("archive"))
             launchCommand = QStringLiteral("archive");
         else if (a == QStringLiteral("--settings") || a == QStringLiteral("settings"))
             launchCommand = QStringLiteral("settings");
@@ -243,9 +245,6 @@ int main(int argc, char *argv[])
             launchCommand = QStringLiteral("home");
         else if (a == QStringLiteral("--tray") || a == QStringLiteral("tray"))
             launchCommand = QStringLiteral("tray");
-        // A legacy "--home" shortcut is intentionally not honoured: the main
-        // icon must stay a screenshot entry point. First launch and autostart
-        // use "--dashboard" instead.
     }
 
     // If SnapLingo is already running, forward the intent and exit. This is what
