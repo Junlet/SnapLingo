@@ -7,6 +7,7 @@
 #include <QDebug>
 #include <QLocalServer>
 #include <QLocalSocket>
+#include <QSettings>
 #include <QTimer>
 #include <QMessageBox>
 #include <QUuid>
@@ -34,6 +35,17 @@ App::App(const QString &launchCommand, QObject *parent)
       m_quitHotkey(103, this)
 {
     m_launchCommand = launchCommand.isEmpty() ? QStringLiteral("screenshot") : launchCommand;
+
+    // First start after install/upgrade opens the dashboard instead of taking a
+    // screenshot. The marker lives outside the profiles so switching profiles
+    // does not replay this.
+    QSettings firstRun(ConfigManager::settingsIniPath(), QSettings::IniFormat);
+    if (!firstRun.value(QStringLiteral("startup/firstLaunchDone"), false).toBool())
+    {
+        m_launchCommand = QStringLiteral("home");
+        firstRun.setValue(QStringLiteral("startup/firstLaunchDone"), true);
+        firstRun.sync();
+    }
 #ifdef _WIN32
     // WebView2 often consumes WM_KEYDOWN in its child HWND, bypassing Qt shortcuts.
     // Use a low-level keyboard hook as a reliable path.
@@ -224,8 +236,13 @@ void App::handleLaunchCommand(const QString &command)
         showConfig();
         return;
     }
-    // The dashboard is only opened from the tray menu; an app icon always
-    // launches a screenshot.
+    if (normalized == QStringLiteral("home"))
+    {
+        showHome();
+        return;
+    }
+    // Default (and "screenshot"): start a capture. Deferred so the launching
+    // process / modal window is gone before the overlay takes focus.
     QTimer::singleShot(0, this, &App::onScreenshotRequested);
 }
 

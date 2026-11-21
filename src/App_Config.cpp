@@ -37,7 +37,7 @@ QString App::syncLaunchAtStartup(bool enabled)
     if (enabled)
     {
         const QString exePath = QDir::toNativeSeparators(QCoreApplication::applicationFilePath());
-        settings.setValue(kValueName, QString("\"%1\" --tray").arg(exePath));
+        settings.setValue(kValueName, QString("\"%1\" --dashboard").arg(exePath));
     }
     else
     {

@@ -516,58 +516,6 @@ void StartupWindow::openReleasesPage()
     QDesktopServices::openUrl(QUrl(url));
 }
 
-void StartupWindow::closeIfNonInteractive(QObject *eventTarget)
-{
-    if (!eventTarget)
-    {
-        accept();
-        return;
-    }
-
-    if (eventTarget == m_checkUpdateBtn || eventTarget == m_openReleasesBtn || eventTarget == m_privacyBtn ||
-        eventTarget == m_screenshotBtn || eventTarget == m_archiveBtn || eventTarget == m_settingsBtn ||
-        eventTarget == m_viewAllBtn)
-        return;
-
-    // Clicking a recent row opens it; only blank dashboard surface closes the window.
-    if (auto *widget = qobject_cast<QWidget *>(eventTarget))
-    {
-        if (m_recentList && (widget == m_recentList || m_recentList->isAncestorOf(widget)))
-            return;
-    }
-
-    accept();
-}
-
-bool StartupWindow::eventFilter(QObject *watched, QEvent *event)
-{
-    if (!event)
-        return QDialog::eventFilter(watched, event);
-
-    switch (event->type())
-    {
-    case QEvent::WindowDeactivate:
-        if (m_showingChildDialog)
-            return QDialog::eventFilter(watched, event);
-        accept();
-        return false;
-    case QEvent::ApplicationPaletteChange:
-    case QEvent::PaletteChange:
-        if (watched == this || watched == m_hintLabel)
-            updateHintColor();
-        break;
-    case QEvent::MouseButtonPress:
-    case QEvent::MouseButtonDblClick:
-    case QEvent::Wheel:
-        closeIfNonInteractive(watched);
-        return false;
-    default:
-        break;
-    }
-
-    return QDialog::eventFilter(watched, event);
-}
-
 void StartupWindow::keyPressEvent(QKeyEvent *event)
 {
     if (!event)
@@ -576,13 +524,13 @@ void StartupWindow::keyPressEvent(QKeyEvent *event)
         return;
     }
 
-    QObject *focusObj = QApplication::focusObject();
-    const bool focusIsButton = qobject_cast<QPushButton *>(focusObj) != nullptr;
-    if (focusIsButton && (event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter || event->key() == Qt::Key_Space))
+    // The dashboard should only close through its normal close button. In
+    // particular, do not treat Escape as "dismiss".
+    if (event->key() == Qt::Key_Escape)
     {
-        QDialog::keyPressEvent(event);
+        event->ignore();
         return;
     }
 
-    accept();
+    QDialog::keyPressEvent(event);
 }

@@ -239,11 +239,13 @@ int main(int argc, char *argv[])
             launchCommand = QStringLiteral("archive");
         else if (a == QStringLiteral("--settings") || a == QStringLiteral("settings"))
             launchCommand = QStringLiteral("settings");
+        else if (a == QStringLiteral("--dashboard") || a == QStringLiteral("dashboard"))
+            launchCommand = QStringLiteral("home");
         else if (a == QStringLiteral("--tray") || a == QStringLiteral("tray"))
             launchCommand = QStringLiteral("tray");
-        // Anything else (including a stale "--home" shortcut left on a desktop)
-        // falls through to the default screenshot action. The dashboard is opened
-        // from the tray menu, so an app icon can never silently turn into "home".
+        // A legacy "--home" shortcut is intentionally not honoured: the main
+        // icon must stay a screenshot entry point. First launch and autostart
+        // use "--dashboard" instead.
     }
 
     // If SnapLingo is already running, forward the intent and exit. This is what

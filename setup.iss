@@ -7,7 +7,7 @@
 [Setup]
 ; 程序基本信息
 AppName={#MyAppName}
-AppVersion=1.1.3
+AppVersion=1.1.4
 ; New installs go to a folder that matches the new product name. Upgrades keep
 ; their existing folder because UsePreviousAppDir defaults to yes: an old user
 ; stays in "...\AI Screenshot Translator" with storage\ untouched, while a fresh
@@ -97,8 +97,8 @@ Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Parameters: "--
 Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Parameters: "--screenshot"; Tasks: desktopicon
 
 [Run]
-; 安装结束后在托盘启动，不自动弹主页，也不自动截图
-Filename: "{app}\{#MyAppExeName}"; Parameters: "--tray"; Description: "{cm:LaunchProgram,{#MyAppName}}"; Flags: nowait postinstall skipifsilent
+; 安装结束后打开主页（首次启动），不自动截图
+Filename: "{app}\{#MyAppExeName}"; Parameters: "--dashboard"; Description: "{cm:LaunchProgram,{#MyAppName}}"; Flags: nowait postinstall skipifsilent
 
 [UninstallDelete]
 Type: filesandordirs; Name: "{app}\wkf.log"

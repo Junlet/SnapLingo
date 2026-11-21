@@ -108,7 +108,6 @@ StartupWindow::StartupWindow(const AppConfig &cfg, HistoryManager *historyManage
     loadUiConfig();
     setupWindowChrome();
     setupDialogUi();
-    installCloseOnInputFilters();
     applyDashboardStyle();
 
     QCoreApplication::setApplicationVersion(m_currentVersion.isEmpty() ? QString::fromUtf8(APP_VERSION) : m_currentVersion);
@@ -342,7 +341,7 @@ void StartupWindow::setupDashboardFooter(QVBoxLayout *root)
     auto *bottom = new QHBoxLayout();
     bottom->setSpacing(8);
 
-    m_hintLabel = new QLabel(formatText(uiString("hint", QStringLiteral("点击空白处 或 按任意键 关闭"))), this);
+    m_hintLabel = new QLabel(formatText(uiString("hint", QStringLiteral("点击右上角 × 关闭"))), this);
     m_hintLabel->setObjectName(QStringLiteral("footerHint"));
     m_hintLabel->setWordWrap(false);
     bottom->addWidget(m_hintLabel, 1);
@@ -554,20 +553,6 @@ QLabel#footerCopyright { color: #94a3b8; font-size: 10px; }
     }
 
     m_dashboardStyleApplying = false;
-}
-
-void StartupWindow::installCloseOnInputFilters()
-{
-    installEventFilter(this);
-    const QList<QWidget *> closeOnClick = {
-        m_versionPill, m_copyrightLabel, m_hintLabel, m_updateStatusLabel,
-        m_profileLabel, m_apiStatusLabel, m_recentEmptyLabel, m_recentEmptyContainer,
-        m_recentSpacer, m_recentCard};
-    for (QWidget *widget : closeOnClick)
-    {
-        if (widget)
-            widget->installEventFilter(this);
-    }
 }
 
 void StartupWindow::updateHintColor()

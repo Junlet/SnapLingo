@@ -44,7 +44,6 @@ private slots:
     void openPrivacyPolicy();
 
 protected:
-    bool eventFilter(QObject *watched, QEvent *event) override;
     void keyPressEvent(QKeyEvent *event) override;
 
 private:
@@ -60,8 +59,6 @@ private:
     void applyDashboardStyle();
     QString recentSnippet(const QString &markdown) const;
     void addUpdateRow(QVBoxLayout *root);
-    void installCloseOnInputFilters();
-    void closeIfNonInteractive(QObject *eventTarget);
     void setUpdateStatus(const QString &text);
     void updateHintColor();
     void updateUpdateHighlight(bool hasNewVersion);
