@@ -93,6 +93,10 @@ MSVC 编译器通过 Visual Studio Installer 勾选
 “已在运行”的提示。安装包的桌面/开始菜单主快捷方式使用 `--screenshot`，
 另有一个 `SnapLingo 主页` 快捷方式使用 `--home`。
 
+安装目录里还会保留一份 `AI-Screenshot-Translator-Cpp.exe`，内容就是新的
+`SnapLingo.exe`。这是给旧版固定到任务栏/快捷工具栏的图标用的兼容别名；旧图标
+仍能启动，并且无参数启动会直接截图。卸载时会一并删除。
+
 ## 四、注意事项
 
 **必须使用 Visual Studio 生成器。**

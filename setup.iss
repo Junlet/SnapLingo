@@ -79,6 +79,10 @@ Type: files; Name: "{app}\debug.log"
 [Files]
 ; Let Inno use normal version checks for versioned binaries.
 Source: "{#SourcePath}\build\Release\{#MyAppExeName}"; DestDir: "{app}"
+; Compatibility alias: a pinned/dock shortcut may still point at the pre-rename
+; executable. Ship the new binary under that name too, so those shortcuts keep
+; working (a plain launch defaults to screenshot).
+Source: "{#SourcePath}\build\Release\{#MyAppExeName}"; DestDir: "{app}"; DestName: "{#MyAppLegacyExeName}"
 Source: "{#SourcePath}\build\Release\*"; DestDir: "{app}"; Flags: recursesubdirs createallsubdirs; Excludes: "{#MyAppExeName},*.log,.stfolder,.stfolder\*,storage,storage\*"
 ; Preserve an existing user-maintained .env during upgrades.
 ; skipifsourcedoesntexist: the repo does not ship a .env, so without this flag
