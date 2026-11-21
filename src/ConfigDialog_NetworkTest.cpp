@@ -67,12 +67,10 @@ int parseAdvancedTimeoutMs(const QJsonObject &root, int fallbackMs)
 
 void ConfigDialog::onTestConnection()
 {
-    if (m_enableAdvancedApiCheck && m_enableAdvancedApiCheck->isChecked())
-    {
-        onTestAdvancedApi();
-        return;
-    }
-
+    // This button belongs to the regular API fields on the General tab. The
+    // Advanced API tab has its own test button; redirecting here made the
+    // General test write its result to a widget on another tab, so it looked
+    // like nothing happened.
     TranslationManager &tm = TranslationManager::instance();
 
     if (!m_testNam)
