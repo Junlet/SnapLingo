@@ -1,0 +1,44 @@
+{
+  "windowTitle": "SnapLingo",
+  "version": "1.1.0",
+  "versionFormat": "Version: {version}",
+  "subtitle": "Capture · Translate · Archive",
+  "actions": {
+    "screenshot": "Start screenshot translation",
+    "archive": "Open archive",
+    "settings": "Settings"
+  },
+  "dashboard": {
+    "recentTitle": "Recent translations",
+    "recentEmpty": "No translations yet. Press {shot} to start the first one.",
+    "viewAll": "View all",
+    "profile": "Profile: {profile}",
+    "apiReady": "API configured",
+    "apiMissing": "API not configured",
+    "version": "v{version}"
+  },
+  "copyright": "Copyright © 2026 Junlet · Based on AI Screenshot Translator by Diraw · GPL-3.0",
+  "hotkeysText": "Tips:\n- Screenshot hotkey: {shot}\n- Open archive window: {view}\n",
+  "hint": "Click blank area or press any key to close",
+  "buttons": {
+    "check": "Check Update",
+    "open": "Open Release Page",
+    "privacy": "Privacy Policy",
+    "close": "Close"
+  },
+  "privacyDialog": {
+    "title": "Privacy Policy",
+    "missingFile": "Privacy policy file not found."
+  },
+  "update": {
+    "statusNotChecked": "Update: Not checked",
+    "statusChecking": "Update: Checking...",
+    "statusNetworkError": "Update: Check failed (network error)",
+    "statusParseError": "Update: Check failed (parse error)",
+    "statusNoVersion": "Update: No version info obtained",
+    "statusLatest": "Update: Already latest ({latest})",
+    "statusNew": "Update: New version found ({latest})"
+  },
+  "repoApiLatest": "https://api.github.com/repos/Junlet/SnapLingo/releases/latest",
+  "repoUrl": "https://github.com/Junlet/SnapLingo/releases"
+}

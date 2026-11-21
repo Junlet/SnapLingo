@@ -1,0 +1,182 @@
+#include "ConfigDialog.h"
+
+#include "TranslationManager.h"
+
+#include <QFileDialog>
+#include <QInputDialog>
+#include <QMessageBox>
+
+void ConfigDialog::onProfileChanged(const QString &name)
+{
+    if (name.isEmpty())
+        return;
+
+    if (m_configManager->loadProfile(name))
+        loadFromConfig();
+}
+
+void ConfigDialog::newProfile()
+{
+    TranslationManager &tm = TranslationManager::instance();
+    bool ok = false;
+    const QString text = QInputDialog::getText(this, tm.tr("new_profile_title"),
+                                               tm.tr("new_profile_label"), QLineEdit::Normal,
+                                               QString(), &ok);
+    const QString profileName = text.trimmed();
+    if (!ok || profileName.isEmpty())
+        return;
+
+    const QString validationError = ConfigManager::validateProfileName(profileName);
+    if (!validationError.isEmpty())
+    {
+        QMessageBox::warning(this, tm.tr("new_profile_title"), tm.tr(validationError));
+        return;
+    }
+
+    if (m_configManager->createProfile(profileName))
+    {
+        updateProfileList();
+        const int index = m_profileCombo->findText(profileName, Qt::MatchExactly);
+        if (index >= 0)
+            m_profileCombo->setCurrentIndex(index);
+        else
+            onProfileChanged(profileName);
+        return;
+    }
+
+    QMessageBox::warning(this, tm.tr("new_profile_title"), tm.tr("msg_profile_exists"));
+}
+
+void ConfigDialog::deleteProfile()
+{
+    TranslationManager &tm = TranslationManager::instance();
+    const QString current = m_profileCombo->currentText();
+    if (current.isEmpty())
+        return;
+    if (current == "Default")
+    {
+        QMessageBox::warning(this, tm.tr("delete_profile_title"), tm.tr("msg_cannot_delete_default"));
+        return;
+    }
+
+    const QMessageBox::StandardButton reply = QMessageBox::question(
+        this, tm.tr("delete_profile_title"),
+        tm.tr("delete_profile_msg").arg(current),
+        QMessageBox::Yes | QMessageBox::No);
+    if (reply != QMessageBox::Yes)
+        return;
+
+    m_configManager->deleteProfile(current);
+    updateProfileList();
+    if (!m_profileCombo->currentText().isEmpty())
+        onProfileChanged(m_profileCombo->currentText());
+}
+
+void ConfigDialog::renameProfile()
+{
+    TranslationManager &tm = TranslationManager::instance();
+    const QString current = m_profileCombo->currentText();
+    if (current.isEmpty())
+        return;
+    if (current == "Default")
+    {
+        QMessageBox::warning(this, tm.tr("rename_profile_title"), tm.tr("msg_cannot_rename_default"));
+        return;
+    }
+
+    bool ok = false;
+    const QString newName = QInputDialog::getText(this, tm.tr("rename_profile_title"),
+                                                  tm.tr("rename_profile_label"), QLineEdit::Normal,
+                                                  current, &ok);
+    const QString trimmedNewName = newName.trimmed();
+    if (!ok || trimmedNewName.isEmpty() || trimmedNewName == current)
+        return;
+
+    const QString validationError = ConfigManager::validateProfileName(trimmedNewName);
+    if (!validationError.isEmpty())
+    {
+        QMessageBox::warning(this, tm.tr("rename_profile_title"), tm.tr(validationError));
+        return;
+    }
+
+    if (m_configManager->renameProfile(current, trimmedNewName))
+    {
+        updateProfileList();
+        const int index = m_profileCombo->findText(trimmedNewName, Qt::MatchExactly);
+        if (index >= 0)
+            m_profileCombo->setCurrentIndex(index);
+        QMessageBox::information(this, tm.tr("rename_profile_title"), tm.tr("msg_rename_success"));
+        return;
+    }
+
+    QMessageBox::warning(this, tm.tr("rename_profile_title"), tm.tr("msg_rename_error"));
+}
+
+void ConfigDialog::copyProfile()
+{
+    const QString current = m_profileCombo->currentText();
+    if (current.isEmpty())
+        return;
+
+    TranslationManager &tm = TranslationManager::instance();
+    bool ok = false;
+    const QString newName = QInputDialog::getText(this,
+                                                  tm.tr("new_profile_title"),
+                                                  tm.tr("new_profile_label"),
+                                                  QLineEdit::Normal,
+                                                  current + "_Copy", &ok);
+    const QString trimmedNewName = newName.trimmed();
+    if (!ok || trimmedNewName.isEmpty())
+        return;
+
+    const QString validationError = ConfigManager::validateProfileName(trimmedNewName);
+    if (!validationError.isEmpty())
+    {
+        QMessageBox::warning(this, tm.tr("new_profile_title"), tm.tr(validationError));
+        return;
+    }
+
+    if (m_configManager->copyProfile(current, trimmedNewName))
+    {
+        updateProfileList();
+        const int index = m_profileCombo->findText(trimmedNewName, Qt::MatchExactly);
+        if (index >= 0)
+            m_profileCombo->setCurrentIndex(index);
+        return;
+    }
+
+    QMessageBox::warning(this, "Error", tm.tr("msg_profile_exists"));
+}
+
+void ConfigDialog::importProfile()
+{
+    TranslationManager &tm = TranslationManager::instance();
+    const QString fileName = QFileDialog::getOpenFileName(this, tm.tr("import_profile_title"), QString(), tm.tr("json_files"));
+    if (fileName.isEmpty())
+        return;
+
+    if (m_configManager->importProfile(fileName))
+    {
+        updateProfileList();
+        QMessageBox::information(this, tm.tr("import_profile_title"), tm.tr("msg_import_success"));
+        return;
+    }
+
+    QMessageBox::warning(this, tm.tr("import_profile_title"), tm.tr("msg_import_error"));
+}
+
+void ConfigDialog::exportProfile()
+{
+    TranslationManager &tm = TranslationManager::instance();
+    const QString fileName = QFileDialog::getSaveFileName(this, tm.tr("export_profile_title"), "profile.json", tm.tr("json_files"));
+    if (fileName.isEmpty())
+        return;
+
+    if (m_configManager->exportProfile(m_configManager->currentProfileName(), fileName))
+    {
+        QMessageBox::information(this, tm.tr("export_profile_title"), tm.tr("msg_export_success"));
+        return;
+    }
+
+    QMessageBox::warning(this, tm.tr("export_profile_title"), tm.tr("msg_export_error"));
+}

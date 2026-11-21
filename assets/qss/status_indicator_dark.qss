@@ -1,0 +1,48 @@
+QToolBar,
+QWidget#resultToolBar {
+  background: #1f1f1f;
+  border: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+QWidget#resultToolBar QToolButton:checked {
+  background: transparent;
+  border: none;
+  color: #e0e0e0;
+}
+
+/* Continue-context toggle: the generic ":checked" rule above is deliberately flat,
+   so this one needs its own rule to make the on/off state visible. */
+QWidget#resultToolBar QToolButton#contextToggleBtn {
+  border: 1px solid transparent;
+  border-radius: 4px;
+}
+
+QWidget#resultToolBar QToolButton#contextToggleBtn:checked {
+  background: rgba(96, 165, 250, 0.22);
+  border: 1px solid rgba(96, 165, 250, 0.6);
+  color: #cfe3ff;
+}
+
+/* Lock button: same treatment as the context toggle so "locked" is unmistakable. */
+QWidget#resultToolBar QToolButton#lockToggleBtn {
+  border: 1px solid transparent;
+  border-radius: 4px;
+}
+
+QWidget#resultToolBar QToolButton#lockToggleBtn:checked {
+  background: rgba(96, 165, 250, 0.22);
+  border: 1px solid rgba(96, 165, 250, 0.6);
+  color: #cfe3ff;
+}
+
+/* Shared-ish MODE indicator look for native Qt labels */
+QLabel#statusIndicator {
+  color: #e0e0e0;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 4px;
+  padding: 2px 6px;
+  margin: 0px 6px;
+  font-size: 12px;
+}

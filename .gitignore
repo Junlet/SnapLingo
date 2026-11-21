@@ -1,0 +1,86 @@
+# Build artifacts
+/build/
+/build*/
+/bin/
+/lib/
+/setup/
+*.obj
+*.o
+*.lo
+*.la
+*.a
+*.exe
+*.dll
+*.lib
+*.pdb
+*.ilk
+*.exp
+*.idb
+*.tmp
+*.zip
+
+# CMake
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+*.cmake
+CMakeUserPresets.json
+
+# Qt / Creator / VS user files
+*.user
+*.user.*
+*.pro.user
+*.qbs.user
+*.qmlproject.user
+*.idea/
+*.vs/
+.vs/
+*.vcxproj.user
+*.VC.db
+*.VC.opendb
+.vscode/
+.clangd/
+.cache/
+
+# Logs and runtime outputs
+debug.log
+*.log
+
+# Local secrets/config (never commit)
+.env
+.env.*
+*.pem
+*.key
+
+# Local storage/runtime data (contains real translations/images)
+/storage/
+/Release/storage/
+/build/Release/storage/
+storage/
+
+# DSH project memory (local notes)
+.dsh-project-memory/
+
+# Generated resources
+*.qrc.depends
+*.qm
+*.autosave
+
+# WebView2 SDK: keep the trimmed native headers/loader, ignore the rest
+webview2_pkg/**
+!webview2_pkg/build/
+!webview2_pkg/build/native/
+!webview2_pkg/build/native/include/
+!webview2_pkg/build/native/include/**
+!webview2_pkg/build/native/x64/
+!webview2_pkg/build/native/x64/**
+!webview2_pkg/WebView2.idl
+!webview2_pkg/WebView2.tlb
+!webview2_pkg/LICENSE.txt
+!webview2_pkg/NOTICE.txt
+
+# OS noise
+.DS_Store
+Thumbs.db
+ehthumbs.db

@@ -1,0 +1,202 @@
+#include "ResultWindow.h"
+
+#include "EmbedWebView.h"
+#include "HistoryManager.h"
+#include "TagDialog.h"
+
+#include <QKeySequence>
+#include <QShortcut>
+
+void ResultWindow::configureHotkeys(const QString &v, const QString &e, const QString &s, const QString &b, const QString &u, const QString &h, const QString &p, const QString &n, const QString &t, const QString &r)
+{
+    m_viewToggleKey = v;
+    m_editToggleKey = e;
+    m_screenshotToggleKey = s;
+    m_boldKey = b;
+    m_underlineKey = u;
+    m_highlightKey = h;
+    m_prevKey = p;
+    m_nextKey = n;
+    m_tagKey = t;
+    m_retranslateKey = r.isEmpty() ? QString("f") : r.toLower();
+
+    qDeleteAll(m_navShortcuts);
+    m_navShortcuts.clear();
+
+    auto add = [this](const QString &k, std::function<void()> f, Qt::ShortcutContext c = Qt::WindowShortcut,
+                      bool autoRepeat = false)
+    {
+        if (k.isEmpty())
+            return;
+        QShortcut *sc = new QShortcut(QKeySequence(k), this);
+        sc->setContext(c);
+        sc->setAutoRepeat(autoRepeat);
+        connect(sc, &QShortcut::activated, this, f);
+        m_navShortcuts.append(sc);
+    };
+
+    add(m_viewToggleKey, [this]()
+        {
+            if (m_webView)
+                m_webView->eval("toggleSource();"); }, Qt::ApplicationShortcut);
+
+    add(m_editToggleKey, [this]()
+        {
+            if (m_webView)
+                m_webView->eval("toggleEdit();"); }, Qt::ApplicationShortcut);
+
+    add(m_screenshotToggleKey, [this]()
+        {
+            if (m_webView)
+                m_webView->eval("toggleScreenshot();"); }, Qt::ApplicationShortcut);
+
+    add(m_boldKey, [this]()
+        {
+            if (m_webView)
+                m_webView->eval("applyFormat('bold');"); });
+
+    add(m_underlineKey, [this]()
+        {
+            if (m_webView)
+                m_webView->eval("applyFormat('underline');"); });
+
+    add(m_highlightKey, [this]()
+        {
+            if (m_webView)
+                m_webView->eval("applyFormat('highlight');"); });
+
+    add(m_prevKey, [this]()
+        { showPrevious(); }, Qt::WindowShortcut, true);
+    add(m_nextKey, [this]()
+        { showNext(); }, Qt::WindowShortcut, true);
+    add(m_tagKey, [this]()
+        { openTagDialog(); }, Qt::ApplicationShortcut);
+
+    // Note: 'F' key for retranslate is handled by WinKeyForwarder to bypass WebView2 interception
+}
+
+void ResultWindow::addEntry(const TranslationEntry &entry)
+{
+    m_history.append(entry);
+    m_currentIndex = m_history.size() - 1;
+    updateNavigation();
+    setContent(entry.translatedMarkdown, entry.originalBase64, entry.originalBase64List, entry.prompt, entry.id);
+    setContextUsed(entry.contextTurns);
+}
+
+void ResultWindow::showPrevious()
+{
+    if (m_currentIndex > 0)
+    {
+        m_currentIndex--;
+        TranslationEntry e = m_history[m_currentIndex];
+        // Refresh from history manager to avoid stale cached content (e.g. "Processing...").
+        if (m_historyManager && !e.id.isEmpty())
+        {
+            TranslationEntry fresh = m_historyManager->getEntryById(e.id);
+            if (!fresh.id.isEmpty())
+            {
+                m_history[m_currentIndex] = fresh;
+                e = fresh;
+            }
+        }
+        setContent(e.translatedMarkdown, e.originalBase64, e.originalBase64List, e.prompt, e.id);
+        updateNavigation();
+    }
+}
+
+void ResultWindow::showNext()
+{
+    if (m_currentIndex < m_history.size() - 1)
+    {
+        m_currentIndex++;
+        TranslationEntry e = m_history[m_currentIndex];
+        // Refresh from history manager to avoid stale cached content (e.g. "Processing...").
+        if (m_historyManager && !e.id.isEmpty())
+        {
+            TranslationEntry fresh = m_historyManager->getEntryById(e.id);
+            if (!fresh.id.isEmpty())
+            {
+                m_history[m_currentIndex] = fresh;
+                e = fresh;
+            }
+        }
+        setContent(e.translatedMarkdown, e.originalBase64, e.originalBase64List, e.prompt, e.id);
+        updateNavigation();
+    }
+}
+
+void ResultWindow::updateNavigation()
+{
+    m_prevAction->setEnabled(m_currentIndex > 0);
+    m_nextAction->setEnabled(m_currentIndex < m_history.size() - 1);
+    m_pageLabel->setText(QString(" %1 / %2 ").arg(m_currentIndex + 1).arg(m_history.size()));
+    updateToolbarResponsive();
+}
+
+void ResultWindow::setHistoryManager(HistoryManager *h)
+{
+    m_historyManager = h;
+}
+
+void ResultWindow::openTagDialog()
+{
+    if (!m_historyManager || m_entryId.isEmpty())
+        return;
+    QStringList allTags = m_historyManager->getAllTags();
+    TagDialog *dialog = new TagDialog(allTags, m_currentTags, this);
+    connect(dialog, &TagDialog::tagsUpdated, this, [this](const QStringList &tags)
+            {
+                m_currentTags = tags;
+                emit tagsUpdated(m_entryId, tags); });
+    dialog->exec();
+    dialog->deleteLater();
+}
+
+void ResultWindow::updateShortcuts() {}
+
+QStringList ResultWindow::currentBase64Images() const
+{
+    if (m_currentIndex >= 0 && m_currentIndex < m_history.size())
+    {
+        const TranslationEntry &entry = m_history.at(m_currentIndex);
+        if (!entry.originalBase64List.isEmpty())
+            return entry.originalBase64List;
+        if (!entry.originalBase64.isEmpty())
+            return QStringList{entry.originalBase64};
+        return QStringList();
+    }
+
+    // No history entry selected: fall back to the payload handed to setContent().
+    if (!m_originalBase64List.isEmpty())
+        return m_originalBase64List;
+    if (!m_originalBase64.isEmpty())
+        return QStringList{m_originalBase64};
+    return QStringList();
+}
+
+void ResultWindow::retranslateCurrent()
+{
+    const QStringList images = currentBase64Images();
+    if (images.isEmpty())
+    {
+        qWarning() << "[RW] retranslateCurrent: no source image available";
+        return;
+    }
+    qDebug() << "[RW] retranslateCurrent: re-sending" << images.size() << "image(s)";
+    emit retranslateRequested(images);
+}
+
+void ResultWindow::triggerRetranslateFromNative()
+{
+    qDebug() << "[RW] triggerRetranslateFromNative called, locked=" << m_isLocked;
+    // A locked window keeps following new captures, so "F" walks forward first there.
+    // The action-bar button calls retranslateCurrent() instead: an explicit click must
+    // never move the user to a different entry than the one they are reading.
+    if (m_isLocked && m_currentIndex < m_history.size() - 1)
+    {
+        showNext();
+        return;
+    }
+    retranslateCurrent();
+}

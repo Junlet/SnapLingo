@@ -1,0 +1,290 @@
+/* Archive window toolbar.
+ *
+ * The bar is a header, not a strip: it owns a light surface, a bottom rule and
+ * real vertical padding. Inside it, controls sit in three logical groups
+ * (filters / search / actions) separated by 1px rules, with 6px inside a group
+ * and 10px between groups. Keep those numbers in sync with setupFilterUI(). */
+
+QWidget#archiveFilterToolbarShell {
+  background: #f8fafc;
+  border: none;
+  border-bottom: 1px solid #e3e8ef;
+  padding: 0px;
+}
+
+QToolBar#archiveFilterToolbar {
+  background: transparent;
+  border: none;
+  padding: 0px;
+  spacing: 0px;
+}
+
+QWidget#archiveToolbarSeparator {
+  background: #dde3ea;
+  border: none;
+}
+
+QWidget#archiveFiltersGroup,
+QWidget#archiveActionsGroup {
+  background: transparent;
+  border: none;
+}
+
+QToolBar#archiveFilterToolbar QLabel[role="caption"] {
+  color: #64748b;
+  padding: 1px 2px;
+}
+
+/* ---- fields ------------------------------------------------------------ */
+
+QWidget#archiveFiltersGroup QDateEdit,
+QWidget#archiveFiltersGroup QComboBox,
+QWidget#archiveFiltersGroup QLineEdit,
+QWidget#archiveActionsGroup QComboBox {
+  color: #1e293b;
+  background: #ffffff;
+  border: 1px solid #d6dde6;
+  border-radius: 4px;
+  padding: 0px 8px;
+  min-height: 18px;
+  selection-background-color: #dbeafe;
+  selection-color: #0f172a;
+}
+
+QWidget#archiveFiltersGroup QDateEdit:hover,
+QWidget#archiveFiltersGroup QComboBox:hover,
+QWidget#archiveFiltersGroup QLineEdit:hover,
+QWidget#archiveActionsGroup QComboBox:hover {
+  background: #ffffff;
+  border-color: #b8c4d3;
+}
+
+QWidget#archiveFiltersGroup QDateEdit:focus,
+QWidget#archiveFiltersGroup QComboBox:focus,
+QWidget#archiveFiltersGroup QLineEdit:focus,
+QWidget#archiveActionsGroup QComboBox:focus {
+  background: #ffffff;
+  border-color: #2563eb;
+}
+
+QWidget#archiveFiltersGroup QLineEdit {
+  placeholder-text-color: #94a3b8;
+}
+
+QWidget#archiveFiltersGroup QLineEdit:disabled {
+  color: #9aa4b2;
+  background: #f8fafc;
+  border-color: #e6eaf0;
+}
+
+QWidget#archiveFiltersGroup QLineEdit[readOnly="true"] {
+  color: #475569;
+  background: #f8fafc;
+}
+
+QWidget#archiveFiltersGroup QComboBox::drop-down,
+QWidget#archiveFiltersGroup QDateEdit::drop-down,
+QWidget#archiveActionsGroup QComboBox::drop-down {
+  border: none;
+  width: 20px;
+}
+
+QWidget#archiveActionsGroup QComboBox::down-arrow {
+  image: url(:/assets/icons/chevron-down-light.svg);
+  width: 10px;
+  height: 6px;
+}
+
+/* ---- buttons ----------------------------------------------------------- */
+
+QWidget#archiveFiltersGroup QPushButton,
+QWidget#archiveActionsGroup QPushButton,
+QWidget#archiveActionsGroup QToolButton {
+  color: #334155;
+  background: #ffffff;
+  border: 1px solid #d6dde6;
+  border-radius: 4px;
+  padding: 0px 10px;
+  min-height: 18px;
+}
+
+QWidget#archiveFiltersGroup QPushButton:hover,
+QWidget#archiveActionsGroup QPushButton:hover,
+QWidget#archiveActionsGroup QToolButton:hover {
+  background: #f1f5f9;
+  border-color: #b8c4d3;
+}
+
+QWidget#archiveFiltersGroup QPushButton:pressed,
+QWidget#archiveActionsGroup QPushButton:pressed,
+QWidget#archiveActionsGroup QToolButton:pressed {
+  background: #e2e8f0;
+}
+
+QWidget#archiveFiltersGroup QPushButton:disabled,
+QWidget#archiveActionsGroup QPushButton:disabled,
+QWidget#archiveActionsGroup QToolButton:disabled {
+  color: #9aa4b2;
+  background: #f8fafc;
+  border-color: #e6eaf0;
+}
+
+QWidget#archiveFiltersGroup QPushButton:checked,
+QWidget#archiveActionsGroup QPushButton:checked {
+  color: #1d4ed8;
+  background: #e8f0fe;
+  border-color: #3b82f6;
+}
+
+QWidget#archiveFiltersGroup QPushButton[variant="danger"],
+QWidget#archiveActionsGroup QPushButton[variant="danger"] {
+  color: #dc2626;
+}
+
+QWidget#archiveFiltersGroup QPushButton[variant="danger"]:hover,
+QWidget#archiveActionsGroup QPushButton[variant="danger"]:hover {
+  background: #fef2f2;
+  border-color: #fca5a5;
+}
+
+QWidget#archiveFiltersGroup QPushButton[variant="danger"]:pressed,
+QWidget#archiveActionsGroup QPushButton[variant="danger"]:pressed {
+  background: #fee2e2;
+}
+
+/* The clear button is an icon, not a field: no border until it is hovered. */
+QWidget#archiveFiltersGroup QPushButton#clearFilterBtn {
+  color: #64748b;
+  background: transparent;
+  border-color: transparent;
+  padding: 0px;
+  font-size: 13px;
+}
+
+QWidget#archiveFiltersGroup QPushButton#clearFilterBtn:hover {
+  color: #dc2626;
+  background: #fef2f2;
+  border-color: #fecaca;
+}
+
+QWidget#archiveFiltersGroup QPushButton#clearFilterBtn:pressed {
+  background: #fee2e2;
+}
+
+/* Sort order reads as a field; the action menu is the primary control. */
+QWidget#archiveActionsGroup QComboBox {
+  padding-right: 4px;
+}
+
+QWidget#archiveActionsGroup QToolButton#archiveActionsMenuBtn {
+  color: #1d4ed8;
+  background: #eef2ff;
+  border-color: #c7d2fe;
+  font-weight: 600;
+  padding: 0px 12px;
+}
+
+/* The label already carries a chevron; Qt's menu indicator would draw a second one. */
+QWidget#archiveActionsGroup QToolButton#archiveActionsMenuBtn::menu-indicator {
+  image: none;
+  width: 0px;
+}
+
+QWidget#archiveActionsGroup QToolButton#archiveActionsMenuBtn:hover {
+  background: #e0e7ff;
+  border-color: #a5b4fc;
+}
+
+/* ---- resize / overflow handle ----------------------------------------- */
+
+QToolButton#archiveOverflowHandle {
+  color: #94a3b8;
+  background: transparent;
+  border: none;
+  border-left: 1px solid #e3e8ef;
+  border-radius: 0px;
+  padding: 0px;
+  margin: 0px;
+  font-size: 12px;
+}
+
+QToolButton#archiveOverflowHandle:hover {
+  color: #475569;
+  background: #eef2f7;
+}
+
+QToolButton#archiveOverflowHandle:pressed {
+  background: #e2e8f0;
+}
+
+QToolButton#archiveOverflowHandle[overflowHintActive="true"] {
+  color: #b91c1c;
+  background: #fef2f2;
+  border-left-color: #fecaca;
+}
+
+/* ---- popups ------------------------------------------------------------ */
+
+QWidget#archiveFiltersGroup QComboBox QAbstractItemView,
+QWidget#archiveActionsGroup QComboBox QAbstractItemView {
+  background: #ffffff;
+  color: #0f172a;
+  border: 1px solid #cbd5e1;
+  outline: 0;
+  selection-background-color: #dbeafe;
+  selection-color: #0f172a;
+}
+
+QWidget#archiveFiltersGroup QComboBox QAbstractItemView::item,
+QWidget#archiveActionsGroup QComboBox QAbstractItemView::item {
+  padding: 6px 10px;
+}
+
+QWidget#archiveFiltersGroup QComboBox QAbstractItemView::item:hover,
+QWidget#archiveActionsGroup QComboBox QAbstractItemView::item:hover {
+  background: #bfdbfe;
+}
+
+QWidget#archiveFiltersGroup QComboBox QAbstractItemView::item:selected,
+QWidget#archiveActionsGroup QComboBox QAbstractItemView::item:selected {
+  background: #93c5fd;
+}
+
+/* ---- bottom pager ------------------------------------------------------ */
+
+QWidget#archivePaginationBar {
+  background: #f8fafc;
+  border-top: 1px solid #e3e8ef;
+}
+
+QWidget#archivePaginationBar QToolButton {
+  color: #334155;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  font-size: 11px;
+}
+
+QWidget#archivePaginationBar QToolButton:hover {
+  background: #eef2f7;
+  border-color: #b8c4d3;
+}
+
+QWidget#archivePaginationBar QToolButton:pressed {
+  background: #dbe3ec;
+}
+
+QWidget#archivePaginationBar QToolButton:disabled {
+  color: #b6c0cc;
+}
+
+QWidget#archivePaginationBar QLabel#pageInfoLabel {
+  color: #64748b;
+}
+
+QToolTip {
+  color: #0f172a;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  padding: 4px 6px;
+}

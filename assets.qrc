@@ -1,0 +1,15 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource>
+    <file>assets/icon.ico</file>
+    <file>assets/icons/chevron-down-dark.svg</file>
+    <file>assets/icons/chevron-down-light.svg</file>
+    <file>assets/icons/chevron-up-dark.svg</file>
+    <file>assets/icons/chevron-up-light.svg</file>
+    <file>assets/qss/archive_toolbar_dark.qss</file>
+    <file>assets/qss/archive_toolbar_light.qss</file>
+    <file>assets/qss/settings_dark.qss</file>
+    <file>assets/qss/settings_light.qss</file>
+    <file>assets/default_profile.json</file>
+    <file alias="check-webview2.ps1">check-webview2.ps1</file>
+</qresource>
+</RCC>
