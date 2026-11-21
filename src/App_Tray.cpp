@@ -28,8 +28,11 @@ void App::setupTray()
     m_trayMenuOpen = false;
     m_pendingTrayScreenshot = false;
 
-    m_trayMenu->addAction(tm.tr("tray_home"), this, &App::showHome);
+    // Screenshot is deliberately the first item: on some Windows 11 tray
+    // overflow implementations a click opens the menu under the cursor, and the
+    // old "home first" order made that click land on "打开主页".
     m_trayMenu->addAction(tm.tr("tray_screenshot"), this, &App::onScreenshotRequested);
+    m_trayMenu->addAction(tm.tr("tray_home"), this, &App::showHome);
     m_trayMenu->addAction(tm.tr("tray_summary"), this, &App::showSummary);
     m_trayMenu->addAction(tm.tr("tray_settings"), this, &App::showConfig);
     m_trayMenu->addSeparator();

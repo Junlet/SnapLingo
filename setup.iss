@@ -7,7 +7,7 @@
 [Setup]
 ; 程序基本信息
 AppName={#MyAppName}
-AppVersion=1.1.1
+AppVersion=1.1.2
 ; New installs go to a folder that matches the new product name. Upgrades keep
 ; their existing folder because UsePreviousAppDir defaults to yes: an old user
 ; stays in "...\AI Screenshot Translator" with storage\ untouched, while a fresh
