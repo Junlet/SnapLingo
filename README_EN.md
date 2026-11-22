@@ -19,11 +19,21 @@ See [CHANGELOG.md](CHANGELOG.md) for release notes.
 
 > Captured with a demo profile and a fake `sk-demo-...` API key. No real key, personal profile, or translation history is included.
 
-| Home | Settings · General |
-|---|---|
-| <img src="docs/screenshots/home.png" width="480" alt="SnapLingo home"> | <img src="docs/screenshots/settings-general.png" width="520" alt="Settings · General"> |
-| **Settings · Interface** | **Settings · System** |
-| <img src="docs/screenshots/settings-interface.png" width="520" alt="Settings · Interface"> | <img src="docs/screenshots/settings-system.png" width="520" alt="Settings · System"> |
+### Home
+
+<img src="docs/screenshots/home.png" width="100%" alt="SnapLingo home">
+
+### Settings · General
+
+<img src="docs/screenshots/settings-general.png" width="100%" alt="Settings · General">
+
+### Settings · Interface
+
+<img src="docs/screenshots/settings-interface.png" width="100%" alt="Settings · Interface">
+
+### Settings · System
+
+<img src="docs/screenshots/settings-system.png" width="100%" alt="Settings · System">
 
 ## Use Cases (Pain Points We Address)
 

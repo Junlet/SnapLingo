@@ -19,11 +19,21 @@
 
 > 截图使用演示配置与假 API Key（`sk-demo-...`），不含真实密钥、个人配置或翻译记录。
 
-| 主页 | 设置 · 常规 |
-|---|---|
-| <img src="docs/screenshots/home.png" width="480" alt="SnapLingo 主页"> | <img src="docs/screenshots/settings-general.png" width="520" alt="设置 · 常规"> |
-| **设置 · 界面** | **设置 · 系统** |
-| <img src="docs/screenshots/settings-interface.png" width="520" alt="设置 · 界面"> | <img src="docs/screenshots/settings-system.png" width="520" alt="设置 · 系统"> |
+### 主页
+
+<img src="docs/screenshots/home.png" width="100%" alt="SnapLingo 主页">
+
+### 设置 · 常规
+
+<img src="docs/screenshots/settings-general.png" width="100%" alt="设置 · 常规">
+
+### 设置 · 界面
+
+<img src="docs/screenshots/settings-interface.png" width="100%" alt="设置 · 界面">
+
+### 设置 · 系统
+
+<img src="docs/screenshots/settings-system.png" width="100%" alt="设置 · 系统">
 
 ## 适用场景（想解决的痛点）
 
