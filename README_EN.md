@@ -17,7 +17,7 @@ See [CHANGELOG.md](CHANGELOG.md) for release notes.
 
 ## Screenshots
 
-> Captured with a demo profile and a fake `sk-demo-...` API key. No real key, personal profile, or translation history is included.
+> Captured with a demo profile and a fake `sk-demo-...` API key. API keys and personal profiles are hidden; the archive screenshot includes one example translation excerpt.
 
 ### Home
 
@@ -34,6 +34,14 @@ See [CHANGELOG.md](CHANGELOG.md) for release notes.
 ### Settings · System
 
 <img src="docs/screenshots/settings-system.png" width="100%" alt="Settings · System">
+
+### Result Window
+
+<img src="docs/screenshots/result-processing.png" width="420" alt="Translation result window">
+
+### Archive Window
+
+<img src="docs/screenshots/archive.png" width="100%" alt="Archive window">
 
 ## Use Cases (Pain Points We Address)
 

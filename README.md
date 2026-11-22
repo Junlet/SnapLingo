@@ -17,7 +17,7 @@
 
 ## 界面预览
 
-> 截图使用演示配置与假 API Key（`sk-demo-...`），不含真实密钥、个人配置或翻译记录。
+> 截图使用演示配置与假 API Key（`sk-demo-...`）；API Key 与个人配置已隐藏。归档截图包含一条示例翻译内容。
 
 ### 主页
 
@@ -34,6 +34,14 @@
 ### 设置 · 系统
 
 <img src="docs/screenshots/settings-system.png" width="100%" alt="设置 · 系统">
+
+### 结果窗口
+
+<img src="docs/screenshots/result-processing.png" width="420" alt="翻译结果窗口">
+
+### 归档窗口
+
+<img src="docs/screenshots/archive.png" width="100%" alt="归档窗口">
 
 ## 适用场景（想解决的痛点）
 

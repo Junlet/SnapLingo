@@ -8,4 +8,5 @@ These screenshots use a demo profile:
 - API key: a fake `sk-demo-...` placeholder (masked in the UI)
 - storage: an empty `D:\SnapLingoDemo\storage`
 
-No real API key, personal profile, translation history, or local user path is included.
+No real API key, personal profile, or local user path is included. `archive.png`
+contains one translation excerpt supplied for the README.
