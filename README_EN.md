@@ -15,6 +15,16 @@ A screenshot translation and archiving tool built with **Qt 6 + WebView2**:
 
 See [CHANGELOG.md](CHANGELOG.md) for release notes.
 
+## Screenshots
+
+> Captured with a demo profile and a fake `sk-demo-...` API key. No real key, personal profile, or translation history is included.
+
+| Home | Settings · General |
+|---|---|
+| <img src="docs/screenshots/home.png" width="480" alt="SnapLingo home"> | <img src="docs/screenshots/settings-general.png" width="520" alt="Settings · General"> |
+| **Settings · Interface** | **Settings · System** |
+| <img src="docs/screenshots/settings-interface.png" width="520" alt="Settings · Interface"> | <img src="docs/screenshots/settings-system.png" width="520" alt="Settings · System"> |
+
 ## Use Cases (Pain Points We Address)
 
 1. Avoid the heavy workflow of "whole-document translation"
